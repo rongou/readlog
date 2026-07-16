@@ -15,7 +15,7 @@
     * action: ego poses for the agent’s main observation frame, effector poses for the agent’s effectors, and grasp
       states for the manipulation state; use domain-aware input and output projection layers with separate weight
       matrices for each embodiment domain
-* token arragnement: an autoregressive (AR) subsequence followed by a diffusion (DM) subsequence
+* token arrangement: an autoregressive (AR) subsequence followed by a diffusion (DM) subsequence
     * AR subsequence: language tokens and video and image tokens embedded by the ViT encoder
     * DM subsequence: video and image tokens from the VAE encoder, audio and action tokens; clean conditioning tokens
       are placed before noisy diffusion tokens; ordered by vision, audio, and action modality
@@ -48,6 +48,15 @@
     * robotics and embodied AI: robot action Chain-of-Thought, embodied reasoning, healthcare robotic surgery
       understanding
     * smart infrastructure: warehouse spatial intelligence, dense pedestrian localization, traffic and anomaly reasoning
+* generator data: multi-stage curriculum that introduces new modalities incrementally over the course of training,
+  starting with images, videos, and audio during pre-training, and later incorporating actions and interleaved
+  multimodal content during mid-training
+* image and video:
+  * collecting raw data and performing pre-processing
+  * computing embeddings and conducting deduplication
+  * categorizing samples and applying basic filtering
+  * annotating data
+  * grouping samples into training-ready shards based on their resolution and duration
 
 ## Ideas
 
