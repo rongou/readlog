@@ -1,0 +1,53 @@
+# Cosmos 3: Omnimodal World Models for Physical AI
+
+* Authors: NVIDIA
+* Link: https://research.nvidia.com/labs/cosmos-lab/cosmos3/technical-report.pdf
+* Date: 2026-06-22
+
+## Notes
+
+* two fundamentally coupled capabilities: understanding and generation
+* omnimodal world models that jointly model language, image, video, audio, and action for both understanding and
+  generation
+* encoders:
+    * image and video: ViT for understanding, VAE for generation
+    * audio: VAE for generation
+    * action: ego poses for the agent’s main observation frame, effector poses for the agent’s effectors, and grasp
+      states for the manipulation state; use domain-aware input and output projection layers with separate weight
+      matrices for each embodiment domain
+* token arragnement: an autoregressive (AR) subsequence followed by a diffusion (DM) subsequence
+    * AR subsequence: language tokens and video and image tokens embedded by the ViT encoder
+    * DM subsequence: video and image tokens from the VAE encoder, audio and action tokens; clean conditioning tokens
+      are placed before noisy diffusion tokens; ordered by vision, audio, and action modality
+* Mixture-of-Transformers (MoT): AR causal self-attention, DM full bidirectional attention; reasoner on AR subsequence
+  only, DM on both subsequences
+* position embeddings: 3D Multimodal RoPE (MRoPE) with absolute temporal indexing
+    * AR tokens: original 3D MRoPE design, language tokens reduce to 1D RoPE (t = h = w)
+    * DM tokens: language t = h = w, video tokens vary on all 3 axes, action and audio tokens use temporal coordinates
+      only (h = w = 0)
+    * FPS modulation maps frame indices to scaled temporal positions so that equal real-world durations occupy equal
+      position ranges at 16, 24, and 30 FPS, where 24 FPS is base frame-per-second
+    * a fixed temporal gap (15000) between the autoregressive and diffusion subsequences
+    * absolute temporal modulation: temporal steps per second (TPS); video TPS = frame rate / 4, audio TPS = 48000 /
+      1920 = 25, action TPS = sampling frequency
+* model variants: edge (2B), nano (8B), super (32B)
+* data: reasoner is trained on paired vision-language data, generator is trained on images, videos, audio, and actions
+  using reconstruction-based objectives
+* reasoner data
+    * pre-training: dominated by image–text and text-only data
+    * SFT: 50% video-text
+* semantic deduplication: image-text and text-only conversations are embedded using Qwen3-VL-Embedding-8B; video-text
+  conversations are embedded using the Perception Encoder PE-Core-G14-448
+* AI-judge quality filtering: faithfulness, completeness, correctness
+* SFT data:
+    * general spatial understanding: 2D and 3D grounding, real-world spatial understanding and grounding,
+      simulator-grounded embodied spatial reasoning
+    * general temporal understanding: temporal event understanding, physical plausibility judgment, structured
+      spatiotemporal scene upsampling
+    * autonomous vehicle (AV): action CoT, temporal event localization, 3D vehicle grounding
+    * robotics and embodied AI: robot action Chain-of-Thought, embodied reasoning, healthcare robotic surgery
+      understanding
+    * smart infrastructure: warehouse spatial intelligence, dense pedestrian localization, traffic and anomaly reasoning
+
+## Ideas
+
