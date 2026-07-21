@@ -68,6 +68,11 @@
   non-speech examples, and remove non-instrumental BGM when it would dominate the target audio
 * paired text-video-action data during mid-training, four physical-AI pillars: egocentric motion, robotics, autonomous
   vehicles, and camera motion
+* training:  two main phases - the Reasoner is pre-trained on large-scale image–text and video–text corpora, and
+  fine-tuned on a curated Physical AI mixture; the trained Reasoner weights are then used to initialize the Generator,
+  which is trained using a progressive multi-stage curriculum, begins with large-scale image, video, and audio
+  pre-training, followed by mid-training that gradually introduces action and transfer data. Finally, the model is
+  post-trained on smaller, carefully curated Physical AI datasets
 
 ## Ideas
 
