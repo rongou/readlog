@@ -52,11 +52,22 @@
   starting with images, videos, and audio during pre-training, and later incorporating actions and interleaved
   multimodal content during mid-training
 * image and video:
-  * collecting raw data and performing pre-processing
-  * computing embeddings and conducting deduplication
-  * categorizing samples and applying basic filtering
-  * annotating data
-  * grouping samples into training-ready shards based on their resolution and duration
+    * collecting raw data and performing pre-processing
+    * computing embeddings and conducting deduplication
+    * categorizing samples and applying basic filtering
+    * annotating data
+    * grouping samples into training-ready shards based on their resolution and duration
+* caption: structured JSON annotation format - subjects, background, lighting, aesthetics, cinematography, temporal
+  dynamics; fine-tuned two Qwen3-VL-8B models on structured annotation data
+* caption-quality benchmark for both images and videos: precision is evaluated directly against the source media to
+  penalize hallucinations: a VLM decomposes the generated caption into atomic claims and verifies whether each claim is
+  visually supported by the image or video itself; recall measures comprehensiveness and relies on human-curated ground
+  truth
+* audio pre-training: use Qwen3-Omni-Captioner to generate synthetic audio descriptions
+* audio mid-training: keep speech only when it is synchronized with a visible face, remove off-screen speech from
+  non-speech examples, and remove non-instrumental BGM when it would dominate the target audio
+* paired text-video-action data during mid-training, four physical-AI pillars: egocentric motion, robotics, autonomous
+  vehicles, and camera motion
 
 ## Ideas
 
