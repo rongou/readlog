@@ -73,6 +73,8 @@
   which is trained using a progressive multi-stage curriculum, begins with large-scale image, video, and audio
   pre-training, followed by mid-training that gradually introduces action and transfer data. Finally, the model is
   post-trained on smaller, carefully curated Physical AI datasets
+* training: sequences of at most 16k tokens, with per-sample limits of 2048 image tokens and 8192 video tokens;
+  square-root normalized per-token loss weighting to balance the contributions of short and long sequences
 
 ## Ideas
 
