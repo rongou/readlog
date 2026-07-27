@@ -75,6 +75,15 @@
   post-trained on smaller, carefully curated Physical AI datasets
 * training: sequences of at most 16k tokens, with per-sample limits of 2048 image tokens and 8192 video tokens;
   square-root normalized per-token loss weighting to balance the contributions of short and long sequences
+* data infrastructure: lance-based incremental curation
+* training infrastructure:
+    * data loader: ingest, on-the-fly augmentation, tokenize text, pack variable-length samples into batches; runs
+      asynchronously in parallel worker processes and prefetches batches onto the device via a pinned-memory staging
+      buffer
+    * distributed training: a combination of Hybrid Sharded Data Parallelism (HSDP) and Context Parallelism (CP)
+    * training loop: TorchTitan
+    * checkpoint saving: configurable cadence; asynchronous, off-critical-path persistence mechanism
+* prompt upsampler converts user requests into this structured format for generation
 
 ## Ideas
 
