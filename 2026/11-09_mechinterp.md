@@ -9,7 +9,8 @@
 * Survey mechanistic interpretability for AI safety: Does understanding how models work actually make them safer?
 * MI studies the internal mechanisms of the neural network in relation to its behavior
 * Interpretability gap: between what models can do and what we know about how they do it
-* 
+* the “Circuits” research program, which framed neural networks as compositions of interpretable features connected by
+  understandable algorithms
 
 ## Ideas
 
